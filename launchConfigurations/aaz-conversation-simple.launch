@@ -1,0 +1,18 @@
+{
+  "ServiceId": "com.ibm.cloudoe.orion.client.deploy",
+  "Params": {
+    "Target": {
+      "Url": "https://api.ng.bluemix.net",
+      "Org": "aazraq@eg.ibm.com",
+      "Space": "Conversation"
+    },
+    "Name": "aazChatbot",
+    "Instrumentation": {
+      "host": "aazChatbot",
+      "domain": "mybluemix.net",
+      "services": []
+    }
+  },
+  "Path": "manifest.yml",
+  "Type": "Cloud Foundry"
+}
