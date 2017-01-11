@@ -73,16 +73,22 @@ function updateMessage(input, response) {
 	if (!response.output) {
 		response.output = {};
 	} else {
-		if (response.intents.length>0&&response.intents[0].intent === 'add') {
+		if (response.intents.length > 0 && (response.intents[0].intent === 'add' || response.intents[0].intent === 'multiply')) {
 			var numbersArr = [];
 			for (var i = 0; i < response.entities.length; i++) {
 				if (response.entities[i].entity === 'sys-number') {
 					numbersArr.push(response.entities[i].value);
 				}
 			}
-			var sum = parseInt(numbersArr[0]) + parseInt(numbersArr[1]);
+			var result = 0;
+			if (response.intents[0].intent === 'add') {
+				result = parseInt(numbersArr[0]) + parseInt(numbersArr[1]);
+			} else {
+				result = parseInt(numbersArr[0]) * parseInt(numbersArr[1]);
+			}
+
 			var output = response.output.text[0];
-			output = output.replace('_sum_', sum);
+			output = output.replace('_result_', result);
 			response.output.text[0] = output;
 			console.log(output);
 		}
