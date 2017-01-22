@@ -74,23 +74,7 @@ function updateMessage(input, response) {
 		response.output = {};
 	} else {
 		if (response.intents.length > 0 && (response.intents[0].intent === 'add' || response.intents[0].intent === 'multiply')) {
-			var numbersArr = [];
-			for (var i = 0; i < response.entities.length; i++) {
-				if (response.entities[i].entity === 'sys-number') {
-					numbersArr.push(response.entities[i].value);
-				}
-			}
-			var result = 0;
-			if (response.intents[0].intent === 'add') {
-				result = parseInt(numbersArr[0]) + parseInt(numbersArr[1]);
-			} else {
-				result = parseInt(numbersArr[0]) * parseInt(numbersArr[1]);
-			}
-
-			var output = response.output.text[0];
-			output = output.replace('_result_', result);
-			response.output.text[0] = output;
-			console.log(output);
+			response = getCalculationResult(response);
 		}
 		return response;
 	}
@@ -110,6 +94,31 @@ function updateMessage(input, response) {
 		}
 	}
 	response.output.text = responseText;
+	return response;
+}
+
+/**
+ * Get the operands, apply the calculation and update the response text based on the calculation.ce
+ * @param  {Object} response The response from the Conversation service
+ * @return {Object}          The response with the updated message
+ */
+function getCalculationResult(response){
+	var numbersArr = [];
+	for (var i = 0; i < response.entities.length; i++) {
+		if (response.entities[i].entity === 'sys-number') {
+			numbersArr.push(response.entities[i].value);
+		}
+	}
+	var result = 0;
+	if (response.intents[0].intent === 'add') {
+		result = parseInt(numbersArr[0]) + parseInt(numbersArr[1]);
+	} else {
+		result = parseInt(numbersArr[0]) * parseInt(numbersArr[1]);
+	}
+
+	var output = response.output.text[0];
+	output = output.replace('_result_', result);
+	response.output.text[0] = output;
 	return response;
 }
 
